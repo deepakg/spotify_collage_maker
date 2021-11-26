@@ -5,7 +5,6 @@ This Flask application lets you make a collage of album covers in a Spotify play
 Clone the repository, go into the spotify_collage_maker folder and run:
 
 ```
-$ export FLASK_APP=spotify
 $ flask run
 ```
 
