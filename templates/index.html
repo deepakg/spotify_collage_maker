@@ -1,0 +1,118 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Spotify Collage Maker</title>
+  </head>
+  <body {% if items and img_urls %}onload="init()"{% endif %}>
+    <form method="post">
+      <label>Spotify Client Id</label>
+      <input type="text" name="spotify_client_id" value="{{spotify_client_id}}" style="width: 300px">
+      <label>Spotify Client Secret</label>
+      <input type="text" name="spotify_client_secret" value="{{spotify_client_secret}}" style="width: 300px"><br/>
+      Don't have a Client Id or Secret? Get yours from the <a href="https://developer.spotify.com/dashboard/applications" target="_blank">Spotify Developer Dashboard</a><br/>
+      <label>Spotify Playlist URL</label><br/>
+      <input type="text" name="spotify_playlist_url" style="width:600px" value="{{spotify_playlist_url}}">
+      <input type="submit" name="Submit">
+    </form>
+    {% if items and img_urls %}
+    <section style="display:table;">
+      <div style="display:table-row;">
+	<div style="display:table-cell;width:300px; min-width:300px">
+	  <table border="1">
+	    {% for item in items %}
+	    <tr><td>{{loop.index}}</td><td>{{item.track.name}}</td></tr>
+	    {%- endfor %}
+	  </table>
+	</div>
+	<div style="display:table-cell;">
+	  <div style="display:none">
+	    {% for url in img_urls -%}
+	    <img src="{{url}}" crossorigin=""/>
+	    {%- endfor %}
+	  </div>
+	  <label>Number of columns in the collage:</label> <label id="numColsValue"></label><br/>
+	  <input type="range" min="1" max="54" value="6" id="numCols" style="width:600px">
+	  <button id="download" style="background-color:blue; color:white; font-weight:bold">Download</button><br/>
+	  <canvas id="example" width="200" height="200">
+	  </canvas>
+	</div>
+      </div>
+      <canvas id="downloader" width="1800" height="1800" style="display:none">
+      </canvas>
+      {% endif %}
+  </body>
+</html>
+{% if items and img_urls %}
+<script type='text/javascript'>
+  var imageCount = 0;
+  const download = document.getElementById('download');
+  var imgs = [];
+  download.addEventListener('click', function(e) {
+      helloWorld(numCols.value, 300, 'downloader')
+      const link = document.createElement('a');
+      link.download = 'download.png';
+      link.href = downloader.toDataURL();
+      link.click();
+      link.delete;
+  });
+
+  const slider = document.getElementById('numCols');
+  slider.addEventListener('input', function(e) {
+      console.log(this.value);
+      helloWorld(this.value);
+      numColsValue.innerText = this.value;
+  });
+
+  function fillImages(unique=true) {
+      var seen = {};
+      for (image of document.images) {
+	  if(unique) {
+	      if (seen[image.src]) {
+		  continue;
+	      }
+	      seen[image.src] = 1;
+	  }
+	  imgs.push(image)
+      }
+  }
+
+  function init() {
+      fillImages();
+      imageCount = imgs.length;
+      helloWorld(6);
+      numCols.max = imgs.length;
+      numColsValue.innerText = numCols.value;
+  }
+
+  function helloWorld(cols, thumbSize=100, canvasId='example') {
+      // alert("Hello World");
+      canvas = document.getElementById(canvasId);
+      ctx = canvas.getContext('2d');
+      var width = thumbSize
+      var rows = Math.ceil(imageCount / cols)
+      canvas.width = cols * width;
+      canvas.height = rows * width;
+      ctx.imageSmoothingEnabled = true;
+      ctx.imageSmoothingQuality = 'high'
+
+      var index = 0
+      var seen = {}
+
+      loop1:
+      for(var y = 0; y < rows; y++) {
+	  for (var x = 0; x < cols; x++) {
+	      ctx.drawImage(imgs[index],x*width,y*width,width,width)
+	      index++
+	      if(index >= imageCount) {
+		  //console.log('breaking')
+		  break loop1;
+	      }
+	  }
+      }
+      //ctx.drawImage(document.images[1],200,0,200,200)
+      //ctx.drawImage(document.images[2],0,200,200,200)
+      //ctx.drawImage(document.images[3],200,200,200,200)
+      //ctx.getImageData()
+  }
+</script>
+{% endif %}
