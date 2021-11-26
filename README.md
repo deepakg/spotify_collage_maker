@@ -17,13 +17,13 @@ https://user-images.githubusercontent.com/238128/143617592-6325cda6-a9d2-4c7b-ae
 
 Some things to consider:
 
-- If multiple tracks from the same album appear in the playlist, it'll only use it once in the collage.
+- If multiple tracks from the same album appear in a playlist, the album's cover will be used only once in the collage.
 
-- The preview uses 100px versions of the album art but the download button would generate the collage again using the higher-res 300px versions.
+- The preview uses 100px version of the album art but the download button generates the collage again using the higher resolution 300px version.
 
-- While large playlists (100+ tracks) are supported, I've noticed that Safari (v15.1 running on macOS Monterey) really struggles with the 300px version. The Download button just fails and you get an invalid 3 KB PNG file. Chrome and Firefox don't have the same problem. 
+- While large playlists (100+ tracks) are supported, I've noticed that Safari (v15.1 running on macOS Monterey) really struggles with generating the 300px version. The Download button just fails and you get an invalid 3 KB PNG file. Chrome and Firefox don't have the same problem.
 
-    - That said, the largest playlist I tried this with had 825 tracks across 757 unique albums and even Chrome and Firefox struggled a little there. The download button worked in Chrome but not in Firefox which simply downloaded a  0 KB PNG file.
+    - That said, the largest playlist I tried this with had 825 tracks across 757 albums and even Chrome and Firefox struggled a little there. The download button worked in Chrome but not in Firefox which simply downloaded a  0 KB PNG file.
 
     - Playlists with 100 tracks or so seems to be the sweet spot here.
 
