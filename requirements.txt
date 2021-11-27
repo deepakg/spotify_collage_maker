@@ -1,0 +1,4 @@
+Flask==2.0.2
+Jinja2==3.0.3
+spotipy==2.18.0
+requests==2.25.1
