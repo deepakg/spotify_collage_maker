@@ -2,15 +2,41 @@
 
 This Flask application lets you make a collage of album covers in a Spotify playlist. You'll need to sign up with Spotify for a Client Id and a Client Secret.
 
-Clone the repository, go into the spotify_collage_maker folder and run:
+Here are a couple of ways you can run this on your machine:
+
+Clone/download this repository to your machine and change your directory to it.
+
+1. Install [Docker Desktop](https://www.docker.com/products/docker-desktop).
+
+2. Build the Docker container image:
+
+```
+$ docker build --tag spotify_collage_maker .
+```
+
+3. Run the Docker container image:
+
+```
+$ docker run --publish 5000:5000 spotify_collage_maker
+```
+
+Don't want to install Docker and have Python 3.8 or higher on your machine already?
+
+1. Install the dependencies on your machine:
+
+```
+$ pip3 install -r requirements.txt
+```
+
+2. Run the Flask Appp:
 
 ```
 $ flask run
 ```
 
-Then point your browser to http://localhost:5000/
+Point your browser to http://localhost:5000/ to start making your collage!
 
-I'll update this file with detailed setup instructions, but in the meanwhile, here is how it looks:
+Here is what to expect:
 
 https://user-images.githubusercontent.com/238128/143617592-6325cda6-a9d2-4c7b-ae36-fea6e0b93513.mov
 
