@@ -145,11 +145,12 @@
   function helloWorld(cols, thumbSize=100, canvasId='example') {
       // alert("Hello World");
       canvas = document.getElementById(canvasId);
-      ctx = canvas.getContext('2d');
       var width = thumbSize
       var rows = Math.ceil(imageCount / cols)
       canvas.width = cols * width;
       canvas.height = rows * width;
+
+      ctx = canvas.getContext('2d');
       ctx.imageSmoothingEnabled = true;
       ctx.imageSmoothingQuality = 'high'
 
