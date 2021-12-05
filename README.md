@@ -38,7 +38,7 @@ Point your browser to http://localhost:5000/ to start making your collage!
 
 Here is what to expect:
 
-https://user-images.githubusercontent.com/238128/144762459-51e5c695-9594-4d01-8691-ff44f9dd6e00.mp4
+https://user-images.githubusercontent.com/238128/144763084-724e0f99-01d6-4e80-b69d-c3cd55a8c891.mp4
 
 Some things to consider:
 
