@@ -46,6 +46,6 @@ Some things to consider:
 
 - The preview uses 100px version of the album art but the download button generates the collage again using the higher resolution 300px version.
 
-- While large playlists (100+ tracks) are supported, the performance varies greatly based on your machine's configuration and the browser you are using. The Download button might not work with very large playlists (500+) other than Chrome.
+- While large playlists (100+ tracks) are supported, the performance will vary based on your machine's configuration and the browser you are using. The Download button might not work with very large playlists (500+) on browsers other than Chrome.
 
 - Chrome and Firefox also allow you to right-click the collage and save it as an image. You will get the low-resolution 100px version in that case though.
