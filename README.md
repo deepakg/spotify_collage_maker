@@ -28,7 +28,7 @@ Don't want to install Docker and have Python 3.8 or higher on your machine alrea
 $ pip3 install -r requirements.txt
 ```
 
-2. Run the Flask Appp:
+2. Run the Flask App:
 
 ```
 $ flask run
@@ -38,7 +38,7 @@ Point your browser to http://localhost:5000/ to start making your collage!
 
 Here is what to expect:
 
-https://user-images.githubusercontent.com/238128/143720656-9dfdbe1f-8119-4dfb-9adc-9a321e69aa7b.mp4
+https://user-images.githubusercontent.com/238128/144762459-51e5c695-9594-4d01-8691-ff44f9dd6e00.mp4
 
 Some things to consider:
 
@@ -46,12 +46,6 @@ Some things to consider:
 
 - The preview uses 100px version of the album art but the download button generates the collage again using the higher resolution 300px version.
 
-- While large playlists (100+ tracks) are supported, I've noticed that Safari (v15.1 running on macOS Monterey) really struggles with generating the 300px version. The Download button just fails and you get an invalid 3 KB PNG file. Chrome and Firefox don't have the same problem.
+- While large playlists (100+ tracks) are supported, the performance varies greatly based on your machine's configuration and the browser you are using. The Download button might not work with very large playlists (500+) other than Chrome.
 
-    - That said, the largest playlist I tried this with had 825 tracks across 757 albums and even Chrome and Firefox struggled a little there. The download button worked in Chrome but not in Firefox which simply downloaded a  0 KB PNG file.
-
-    - Playlists with 100 tracks or so seems to be the sweet spot here.
-
-    - My tests were run on a Mid-2015 Macbook Pro with 16 GB RAM, quad core i7 Intel processor running at 2.2 GHz and integrated Intel Iris Pro processor with 1536 MB memory. You might get better or worse results depending on your hardware.
-
-- Chrome and Firefox also allow you to right-click the collage and save it as an image.
+- Chrome and Firefox also allow you to right-click the collage and save it as an image. You will get the low-resolution 100px version in that case though.
