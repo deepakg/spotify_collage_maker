@@ -2,23 +2,70 @@
 <html>
   <head>
     <title>Spotify Collage Maker</title>
+    <style type="text/css">
+      body {
+	  padding:10px;
+	  font-family:Helvetica, Arial, sans-serif;
+	  color: #444;
+	  font-size:large;
+      }
+      label {
+	  font-weight: bolder;
+      }
+      input[type=text] {
+	  font-size:large;
+	  padding:5px;
+	  width: 400px;
+      }
+      input[type=submit], button {
+	  background-color: rgb(42,184,89);
+	  color:white;
+	  font-weight:bold;
+	  font-size:large;
+	  padding:5px 10px 5px 10px;
+      }
+      input[type=range] {
+	  width:600px;
+      }
+      span.small {
+	  font-size:small;
+      }
+      th {
+	  text-align:left;
+	  padding: 5px 3px 5px 3px;
+      }
+      td {
+	  padding:3px
+      }
+      tr > td:first-child {
+	  text-align:right;
+	  margin-right:2px;
+      }
+    </style>
   </head>
   <body {% if items and img_urls %}onload="init()"{% endif %}>
     <form method="post">
-      <label>Spotify Client Id</label>
-      <input type="text" name="spotify_client_id" value="{{spotify_client_id}}" style="width: 300px">
-      <label>Spotify Client Secret</label>
-      <input type="text" name="spotify_client_secret" value="{{spotify_client_secret}}" style="width: 300px"><br/>
-      Don't have a Client Id or Secret? Get yours from the <a href="https://developer.spotify.com/dashboard/applications" target="_blank">Spotify Developer Dashboard</a><br/>
-      <label>Spotify Playlist URL</label><br/>
-      <input type="text" name="spotify_playlist_url" style="width:600px" value="{{spotify_playlist_url}}">
-      <input type="submit" name="Submit">
+      <p>
+	<label>Spotify Client Id</label><br/>
+	<input type="text" name="spotify_client_id" value="{{spotify_client_id}}">
+      </p>
+      <p>
+	<label>Spotify Client Secret</label><br/>
+	<input type="text" name="spotify_client_secret" value="{{spotify_client_secret}}"><br/>
+	<span class="small">Don't have a Client Id or Secret? Get yours from the <a href="https://developer.spotify.com/dashboard/applications" target="_blank">Spotify Developer Dashboard</a></span>
+      </p>
+      <p>
+	<label>Spotify Playlist URL</label><br/>
+	<input type="text" name="spotify_playlist_url" style="width:600px" value="{{spotify_playlist_url}}">
+	<input type="submit" name="Submit">
+      </p>
     </form>
     {% if items and img_urls %}
     <section style="display:table;">
       <div style="display:table-row;">
 	<div style="display:table-cell;width:300px; min-width:300px">
-	  <table border="1">
+	  <table>
+	    <tr><th colspan="2">Track Listing</th></tr>
 	    {% for item in items %}
 	    <tr><td>{{loop.index}}</td><td>{{item.track.name}}</td></tr>
 	    {%- endfor %}
@@ -30,11 +77,17 @@
 	    <img src="{{url}}" crossorigin=""/>
 	    {%- endfor %}
 	  </div>
-	  <label>Number of columns in the collage:</label> <label id="numColsValue"></label><br/>
-	  <input type="range" min="1" max="54" value="6" id="numCols" style="width:600px">
-	  <button id="download" style="background-color:blue; color:white; font-weight:bold">Download</button><br/>
-	  <canvas id="example" width="200" height="200">
-	  </canvas>
+	  <p>
+	    <button id="download">Download Collage</button>
+	  </p>
+	  <p>
+	    <label>Number of columns in the collage:</label> <label id="numColsValue"></label><br/>
+	    <input type="range" min="1" max="54" value="6" id="numCols"/>
+	  </p>
+	  <p>
+	    <canvas id="example" width="200" height="200">
+	    </canvas>
+	  </p>
 	</div>
       </div>
       <canvas id="downloader" width="1800" height="1800" style="display:none">
