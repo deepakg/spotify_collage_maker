@@ -45,6 +45,7 @@
   </head>
   <body {% if items and img_urls %}onload="init()"{% endif %}>
     <form method="post">
+      {% if not spotify_client_id and not spotify_client_secret %}
       <p>
 	<label>Spotify Client Id</label><br/>
 	<input type="text" name="spotify_client_id" value="{{spotify_client_id}}">
@@ -54,6 +55,10 @@
 	<input type="text" name="spotify_client_secret" value="{{spotify_client_secret}}"><br/>
 	<span class="small">Don't have a Client Id or Secret? Get yours from the <a href="https://developer.spotify.com/dashboard/applications" target="_blank">Spotify Developer Dashboard</a></span>
       </p>
+      {% else %}
+      <input type="hidden" name="spotify_client_id" value="{{spotify_client_id}}">
+      <input type="hidden" name="spotify_client_secret" value="{{spotify_client_secret}}">
+      {% endif %}
       <p>
 	<label>Spotify Playlist URL</label><br/>
 	<input type="text" name="spotify_playlist_url" style="width:600px" value="{{spotify_playlist_url}}">
