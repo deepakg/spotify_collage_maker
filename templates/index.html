@@ -94,83 +94,84 @@
           </p>
         </div>
       </div>
-      <canvas id="downloader" width="1800" height="1800" style="display:none">
-      </canvas>
-      {% endif %}
+      <canvas id="downloader" style="display:none"></canvas>
+    </section>
+    <script type='text/javascript'>
+      var imageCount = 0;
+      const download = document.getElementById('download');
+      var imgs = [];
+
+      download.addEventListener('click', function(e) {
+          createCollage(numCols.value, 300, 'downloader');
+          const link = document.createElement('a');
+          link.download = 'spotify_collage.png';
+          link.href = downloader.toDataURL();
+          link.click();
+          link.remove();
+      });
+
+      const slider = document.getElementById('numCols');
+      slider.addEventListener('input', function(e) {
+          createCollage(this.value);
+          numColsValue.innerText = this.value;
+      });
+
+      function fillImages(unique=true) {
+          var seen = {};
+          for (image of document.images) {
+              if(unique) {
+		  if (seen[image.src]) {
+		      continue;
+		  }
+		  seen[image.src] = 1;
+              }
+              imgs.push(image);
+          }
+      }
+
+      function init() {
+          fillImages();
+          imageCount = imgs.length;
+          createCollage(6);
+          numCols.max = imgs.length;
+          numColsValue.innerText = numCols.value;
+      }
+
+      function createCollage(cols, thumbSize=100, canvasId='example') {
+          const canvas = document.getElementById(canvasId);
+          const ctx = canvas.getContext('2d');
+
+          const width = thumbSize;
+          const rows = Math.ceil(imageCount / cols);
+
+          // Set the canvas size (this will be the display size)
+          canvas.style.width = cols * width + 'px';
+          canvas.style.height = rows * width + 'px';
+
+          // Increase the actual canvas size for Retina displays
+          const scale = window.devicePixelRatio;
+          canvas.width = cols * width * scale;
+          canvas.height = rows * width * scale;
+
+          // Scale the context to ensure correct drawing operations
+          ctx.scale(scale, scale);
+
+          // Enable image smoothing
+          ctx.imageSmoothingEnabled = true;
+          ctx.imageSmoothingQuality = 'high';
+
+          var index = 0;
+
+          for(var y = 0; y < rows; y++) {
+              for (var x = 0; x < cols; x++) {
+		  if(index >= imageCount) break;
+		  ctx.drawImage(imgs[index], x * width, y * width, width, width);
+		  index++;
+              }
+              if(index >= imageCount) break;
+          }
+      }
+    </script>
+    {% endif %}
   </body>
 </html>
-{% if items and img_urls %}
-<script type='text/javascript'>
-  var imageCount = 0;
-  const download = document.getElementById('download');
-  var imgs = [];
-  download.addEventListener('click', function(e) {
-      helloWorld(numCols.value, 300, 'downloader')
-      const link = document.createElement('a');
-      link.download = 'download.png';
-      link.href = downloader.toDataURL();
-      link.click();
-      link.delete;
-  });
-
-  const slider = document.getElementById('numCols');
-  slider.addEventListener('input', function(e) {
-      console.log(this.value);
-      helloWorld(this.value);
-      numColsValue.innerText = this.value;
-  });
-
-  function fillImages(unique=true) {
-      var seen = {};
-      for (image of document.images) {
-	  if(unique) {
-	      if (seen[image.src]) {
-		  continue;
-	      }
-	      seen[image.src] = 1;
-	  }
-	  imgs.push(image)
-      }
-  }
-
-  function init() {
-      fillImages();
-      imageCount = imgs.length;
-      helloWorld(6);
-      numCols.max = imgs.length;
-      numColsValue.innerText = numCols.value;
-  }
-
-  function helloWorld(cols, thumbSize=100, canvasId='example') {
-      // alert("Hello World");
-      canvas = document.getElementById(canvasId);
-      var width = thumbSize
-      var rows = Math.ceil(imageCount / cols)
-      canvas.width = cols * width;
-      canvas.height = rows * width;
-
-      ctx = canvas.getContext('2d');
-      ctx.imageSmoothingEnabled = true;
-      ctx.imageSmoothingQuality = 'high'
-
-      var index = 0
-      var seen = {}
-
-      loop1:
-      for(var y = 0; y < rows; y++) {
-	  for (var x = 0; x < cols; x++) {
-	      ctx.drawImage(imgs[index],x*width,y*width,width,width)
-	      index++
-	      if(index >= imageCount) {
-		  //console.log('breaking')
-		  break loop1;
-	      }
-	  }
-      }
-      //ctx.drawImage(document.images[1],200,0,200,200)
-      //ctx.drawImage(document.images[2],0,200,200,200)
-      //ctx.drawImage(document.images[3],200,200,200,200)
-      //ctx.getImageData()
-  }
-</script>
-{% endif %}
