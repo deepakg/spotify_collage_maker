@@ -47,53 +47,52 @@
     <form method="post">
       {% if not spotify_client_id and not spotify_client_secret %}
       <p>
-	<label>Spotify Client Id</label><br/>
-	<input type="text" name="spotify_client_id" value="{{spotify_client_id}}">
+        <label>Spotify Client Id</label><br/>
+        <input type="text" name="spotify_client_id" value="{{spotify_client_id}}">
       </p>
       <p>
-	<label>Spotify Client Secret</label><br/>
-	<input type="text" name="spotify_client_secret" value="{{spotify_client_secret}}"><br/>
-	<span class="small">Don't have a Client Id or Secret? Get yours from the <a href="https://developer.spotify.com/dashboard/applications" target="_blank">Spotify Developer Dashboard</a></span>
+        <label>Spotify Client Secret</label><br/>
+        <input type="text" name="spotify_client_secret" value="{{spotify_client_secret}}"><br/>
+        <span class="small">Don't have a Client Id or Secret? Get yours from the <a href="https://developer.spotify.com/dashboard/applications" target="_blank">Spotify Developer Dashboard</a></span>
       </p>
       {% else %}
       <input type="hidden" name="spotify_client_id" value="{{spotify_client_id}}">
       <input type="hidden" name="spotify_client_secret" value="{{spotify_client_secret}}">
       {% endif %}
       <p>
-	<label>Spotify Playlist URL</label><br/>
-	<input type="text" name="spotify_playlist_url" style="width:700px" value="{{spotify_playlist_url}}">
-	<input type="submit" name="Submit" value="Fetch Tracks">
+        <label>Spotify Playlist URL</label><br/>
+        <input type="text" name="spotify_playlist_url" style="width:700px" value="{{spotify_playlist_url}}">
+        <input type="submit" name="Submit" value="Fetch Tracks">
       </p>
     </form>
     {% if items and img_urls %}
     <section style="display:table;">
       <div style="display:table-row;">
-	<div style="display:table-cell;width:300px; min-width:300px">
-	  <table>
-	    <tr><th colspan="2">Track Listing</th></tr>
-	    {% for item in items %}
-	    <tr><td>{{loop.index}}</td><td>{{item.track.name}}</td></tr>
-	    {%- endfor %}
-	  </table>
-	</div>
-	<div style="display:table-cell;">
-	  <div style="display:none">
-	    {% for url in img_urls -%}
-	    <img src="{{url}}" crossorigin=""/>
-	    {%- endfor %}
-	  </div>
-	  <p>
-	    <button id="download">Download Collage</button>
-	  </p>
-	  <p>
-	    <label>Number of columns in the collage:</label> <label id="numColsValue"></label><br/>
-	    <input type="range" min="1" max="54" value="6" id="numCols"/>
-	  </p>
-	  <p>
-	    <canvas id="example" width="200" height="200">
-	    </canvas>
-	  </p>
-	</div>
+        <div style="display:table-cell;width:300px; min-width:300px">
+          <table>
+            <tr><th colspan="2">Track Listing</th></tr>
+            {% for item in items %}
+            <tr><td>{{loop.index}}</td><td>{{item.track.name}}</td></tr>
+            {%- endfor %}
+          </table>
+        </div>
+        <div style="display:table-cell;">
+          <div style="display:none">
+            {% for url in img_urls -%}
+            <img src="{{url}}" crossorigin=""/>
+            {%- endfor %}
+          </div>
+          <p>
+            <button id="download">Download Collage</button>
+          </p>
+          <p>
+            <label>Number of columns in the collage:</label> <label id="numColsValue"></label><br/>
+            <input type="range" min="1" max="54" value="6" id="numCols"/>
+          </p>
+          <p>
+            <canvas id="example"></canvas>
+          </p>
+        </div>
       </div>
       <canvas id="downloader" width="1800" height="1800" style="display:none">
       </canvas>
