@@ -87,6 +87,14 @@
           text-align: right;
           margin-right: 2px;
       }
+      .checkbox-container {
+        display: flex;
+        align-items: center;
+        margin-bottom: 10px;
+      }
+      .checkbox-container input[type="checkbox"] {
+        margin-right: 10px;
+      }
     </style>
   </head>
   <body {% if items and img_urls %}onload="init()"{% endif %}>
@@ -131,6 +139,10 @@
           <p>
             <button id="download">Download Collage</button>
           </p>
+          <div class="checkbox-container">
+            <input type="checkbox" id="fillColumnsFirst" />
+            <label for="fillColumnsFirst">Fill columns first</label>
+          </div>
           <p>
             <label>Number of columns in the collage:</label> <label id="numColsValue"></label><br/>
             <input type="range" min="1" max="54" value="6" id="numCols"/>
@@ -145,6 +157,7 @@
     <script type='text/javascript'>
       var imageCount = 0;
       const download = document.getElementById('download');
+      const fillColumnsFirst = document.getElementById('fillColumnsFirst');
       var imgs = [];
 
       download.addEventListener('click', function(e) {
@@ -162,14 +175,18 @@
           numColsValue.innerText = this.value;
       });
 
+      fillColumnsFirst.addEventListener('change', function(e) {
+          createCollage(numCols.value);
+      });
+
       function fillImages(unique=true) {
           var seen = {};
           for (image of document.images) {
               if(unique) {
-		  if (seen[image.src]) {
-		      continue;
-		  }
-		  seen[image.src] = 1;
+                  if (seen[image.src]) {
+                      continue;
+                  }
+                  seen[image.src] = 1;
               }
               imgs.push(image);
           }
@@ -208,13 +225,24 @@
 
           var index = 0;
 
-          for(var y = 0; y < rows; y++) {
-              for (var x = 0; x < cols; x++) {
-		  if(index >= imageCount) break;
-		  ctx.drawImage(imgs[index], x * width, y * width, width, width);
-		  index++;
+          if (fillColumnsFirst.checked) {
+              for(var x = 0; x < cols; x++) {
+                  for (var y = 0; y < rows; y++) {
+                      if(index >= imageCount) break;
+                      ctx.drawImage(imgs[index], x * width, y * width, width, width);
+                      index++;
+                  }
+                  if(index >= imageCount) break;
               }
-              if(index >= imageCount) break;
+          } else {
+              for(var y = 0; y < rows; y++) {
+                  for (var x = 0; x < cols; x++) {
+                      if(index >= imageCount) break;
+                      ctx.drawImage(imgs[index], x * width, y * width, width, width);
+                      index++;
+                  }
+                  if(index >= imageCount) break;
+              }
           }
       }
     </script>
