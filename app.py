@@ -1,7 +1,4 @@
-from flask import Flask
-from flask import render_template
-from flask import request
-
+from flask import Flask, render_template, request, make_response
 from spotify_downloader import *
 
 app = Flask(__name__)
