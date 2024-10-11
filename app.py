@@ -4,9 +4,9 @@ from spotify_downloader import *
 app = Flask(__name__)
 
 @app.route("/", methods=['GET', 'POST'])
-def hello_world():
     spotify_client_id = ""
     spotify_client_secret = ""
+def spotify_collage():
     spotify_playlist_url = ""
     playlist_items = []
     img_urls = []
