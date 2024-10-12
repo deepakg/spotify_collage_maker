@@ -95,6 +95,14 @@
       .checkbox-container input[type="checkbox"] {
         margin-right: 10px;
       }
+      .color-picker-container {
+        display: flex;
+        align-items: center;
+        margin-bottom: 10px;
+      }
+      .color-picker-container input[type="color"] {
+        margin-right: 10px;
+      }
     </style>
   </head>
   <body {% if items and img_urls %}onload="init()"{% endif %}>
@@ -151,6 +159,10 @@
             <label>Space between images:</label> <label id="spaceValue">0</label><br/>
             <input type="range" min="0" max="25" value="0" id="space"/>
           </p>
+          <div class="color-picker-container">
+            <input type="color" id="spaceColor" value="#FFFFFF">
+            <label for="spaceColor">Space color</label>
+          </div>
           <p>
             <canvas id="example"></canvas>
           </p>
@@ -164,6 +176,7 @@
       const fillColumnsFirst = document.getElementById('fillColumnsFirst');
       const space = document.getElementById('space');
       const spaceValue = document.getElementById('spaceValue');
+      const spaceColor = document.getElementById('spaceColor');
       var imgs = [];
 
       download.addEventListener('click', function(e) {
@@ -190,6 +203,10 @@
           spaceValue.innerText = this.value;
       });
 
+      spaceColor.addEventListener('input', function(e) {
+          createCollage(numCols.value, 100, space.value);
+      });
+
       function fillImages(unique=true) {
           var seen = {};
           for (image of document.images) {
@@ -211,7 +228,7 @@
           numColsValue.innerText = numCols.value;
       }
 
-  function createCollage(cols, thumbSize=100, spacing=0, canvasId='example') {
+      function createCollage(cols, thumbSize=100, spacing=0, canvasId='example') {
           const canvas = document.getElementById(canvasId);
           const ctx = canvas.getContext('2d');
 
@@ -237,8 +254,8 @@
           ctx.imageSmoothingEnabled = true;
           ctx.imageSmoothingQuality = 'high';
 
-          // Fill the background with white
-          ctx.fillStyle = 'white';
+          // Fill the background with the selected color
+          ctx.fillStyle = spaceColor.value;
           ctx.fillRect(0, 0, totalWidth, totalHeight);
 
           var index = 0;
