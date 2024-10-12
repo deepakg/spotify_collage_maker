@@ -148,6 +148,10 @@
             <input type="range" min="1" max="54" value="6" id="numCols"/>
           </p>
           <p>
+            <label>Space between images:</label> <label id="spaceValue">0</label><br/>
+            <input type="range" min="0" max="25" value="0" id="space"/>
+          </p>
+          <p>
             <canvas id="example"></canvas>
           </p>
         </div>
@@ -158,10 +162,12 @@
       var imageCount = 0;
       const download = document.getElementById('download');
       const fillColumnsFirst = document.getElementById('fillColumnsFirst');
+      const space = document.getElementById('space');
+      const spaceValue = document.getElementById('spaceValue');
       var imgs = [];
 
       download.addEventListener('click', function(e) {
-          createCollage(numCols.value, 300, 'downloader');
+          createCollage(numCols.value, 300, space.value, 'downloader');
           const link = document.createElement('a');
           link.download = 'spotify_collage.png';
           link.href = downloader.toDataURL();
@@ -171,12 +177,17 @@
 
       const slider = document.getElementById('numCols');
       slider.addEventListener('input', function(e) {
-          createCollage(this.value);
+          createCollage(this.value, 100, space.value);
           numColsValue.innerText = this.value;
       });
 
       fillColumnsFirst.addEventListener('change', function(e) {
-          createCollage(numCols.value);
+          createCollage(numCols.value, 100, space.value);
+      });
+
+      space.addEventListener('input', function(e) {
+          createCollage(numCols.value, 100, this.value);
+          spaceValue.innerText = this.value;
       });
 
       function fillImages(unique=true) {
@@ -195,33 +206,40 @@
       function init() {
           fillImages();
           imageCount = imgs.length;
-          createCollage(6);
+          createCollage(6, 100, 0);
           numCols.max = imgs.length;
           numColsValue.innerText = numCols.value;
       }
 
-      function createCollage(cols, thumbSize=100, canvasId='example') {
+  function createCollage(cols, thumbSize=100, spacing=0, canvasId='example') {
           const canvas = document.getElementById(canvasId);
           const ctx = canvas.getContext('2d');
 
           const width = thumbSize;
+          const scaleFactor = width / 100;  // Calculate scale factor based on thumb size
+          const scaledSpacing = Math.round(parseInt(spacing) * scaleFactor);  // Scale spacing and round to nearest integer
+
           const rows = Math.ceil(imageCount / cols);
 
+          // Correctly calculate total width and height including spacing
+          const totalWidth = cols * width + (cols - 1) * scaledSpacing + 2 * scaledSpacing;
+          const totalHeight = rows * width + (rows - 1) * scaledSpacing + 2 * scaledSpacing;
+
           // Set the canvas size (this will be the display size)
-          canvas.style.width = cols * width + 'px';
-          canvas.style.height = rows * width + 'px';
+          canvas.style.width = totalWidth + 'px';
+          canvas.style.height = totalHeight + 'px';
 
-          // Increase the actual canvas size for Retina displays
-          const scale = window.devicePixelRatio;
-          canvas.width = cols * width * scale;
-          canvas.height = rows * width * scale;
-
-          // Scale the context to ensure correct drawing operations
-          ctx.scale(scale, scale);
+          // Set the actual canvas size (this affects the downloaded image quality)
+          canvas.width = totalWidth;
+          canvas.height = totalHeight;
 
           // Enable image smoothing
           ctx.imageSmoothingEnabled = true;
           ctx.imageSmoothingQuality = 'high';
+
+          // Fill the background with white
+          ctx.fillStyle = 'white';
+          ctx.fillRect(0, 0, totalWidth, totalHeight);
 
           var index = 0;
 
@@ -229,7 +247,10 @@
               for(var x = 0; x < cols; x++) {
                   for (var y = 0; y < rows; y++) {
                       if(index >= imageCount) break;
-                      ctx.drawImage(imgs[index], x * width, y * width, width, width);
+                      ctx.drawImage(imgs[index],
+                          scaledSpacing + x * (width + scaledSpacing),
+                          scaledSpacing + y * (width + scaledSpacing),
+                          width, width);
                       index++;
                   }
                   if(index >= imageCount) break;
@@ -238,7 +259,10 @@
               for(var y = 0; y < rows; y++) {
                   for (var x = 0; x < cols; x++) {
                       if(index >= imageCount) break;
-                      ctx.drawImage(imgs[index], x * width, y * width, width, width);
+                      ctx.drawImage(imgs[index],
+                          scaledSpacing + x * (width + scaledSpacing),
+                          scaledSpacing + y * (width + scaledSpacing),
+                          width, width);
                       index++;
                   }
                   if(index >= imageCount) break;
